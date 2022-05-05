@@ -1,23 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios'
+//import useEffect, { Component } from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import ListeUser from './Components/ListeUser'
+import AddUser from './Components/AddUser'
 function App() {
+  const [users,setUser]=useState([]);
+  useEffect (() => {
+    console.log('update');
+    axios.get('https://jsonplaceholder.typicode.com/users').then(res=>setUser(res.data))},[]);
+  
+  const deleteuser=(rr,index)=> setUser(rr.filter((el)=>el.id!=index))
+
+  const adduser =(bb,data) => setUser(bb.push(data))
+  const setU =(data) => setUser(data)
+
+    /*const b=axios.post('https://jsonplaceholder.typicode.com/users', {
+      title : 'Marwen',
+      body  : 'MarwenMarweMarwe',
+      userId : 1})
+      .then(res=>console.log(res))
+      .catch(err=>console.error(err))*/
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <AddUser uu={users} adduser={adduser} st={setU}/>
+    <ListeUser ll={users} deleteuser={deleteuser}/>
     </div>
   );
 }
